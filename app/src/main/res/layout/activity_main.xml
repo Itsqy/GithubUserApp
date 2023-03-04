@@ -10,13 +10,13 @@
         android:id="@+id/sv_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Input username"
-        android:text="Username"
+        android:hint="@string/input_username"
+        android:text="@string/username"
         app:iconifiedByDefault="false"
-        app:queryHint="Input username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Input username" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"

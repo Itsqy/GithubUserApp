@@ -22,7 +22,7 @@ class FollowersFragment : Fragment() {
     lateinit var userAdapter: FeatureAdapter
 
     private var _binding: FragmentFollowersBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class FollowersFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFollowersBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
 
@@ -39,9 +39,11 @@ class FollowersFragment : Fragment() {
         showLoading()
         userName = arguments?.getString("name")
         userAdapter = FeatureAdapter(requireActivity().applicationContext)
-        binding.rvFollowers.layoutManager = LinearLayoutManager(activity)
-        binding.rvFollowers.setHasFixedSize(true)
-        binding.rvFollowers.adapter = userAdapter
+        binding?.apply {
+            rvFollowers.layoutManager = LinearLayoutManager(activity)
+            rvFollowers.setHasFixedSize(true)
+            rvFollowers.adapter = userAdapter
+        }
 
 
         featureViewModel.setFollowers(userName.toString())
@@ -55,12 +57,16 @@ class FollowersFragment : Fragment() {
     fun showLoading() {
         featureViewModel.loading.observe(viewLifecycleOwner) {
             if (it) {
-                binding.pbFollowers.visibility = View.VISIBLE
-                binding.rvFollowers.visibility = View.INVISIBLE
+                binding?.apply {
+                    pbFollowers.visibility = View.VISIBLE
+                    rvFollowers.visibility = View.INVISIBLE
+                }
 
             } else {
-                binding.pbFollowers.visibility = View.INVISIBLE
-                binding.rvFollowers.visibility = View.VISIBLE
+                binding?.apply {
+                    pbFollowers.visibility = View.INVISIBLE
+                    rvFollowers.visibility = View.VISIBLE
+                }
             }
         }
     }

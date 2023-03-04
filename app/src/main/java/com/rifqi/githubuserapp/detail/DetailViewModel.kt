@@ -1,12 +1,10 @@
 package com.rifqi.githubuserapp.detail
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rifqi.githubuserapp.model.ListUserResponse
-import com.rifqi.githubuserapp.model.UserResponse
 import com.rifqi.githubuserapp.network.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +15,6 @@ class DetailViewModel : ViewModel() {
 
     private val _errorMsg = MutableLiveData<String>()
     val errorMsg: LiveData<String> = _errorMsg
-
 
 
     fun setDetail(user: String) {

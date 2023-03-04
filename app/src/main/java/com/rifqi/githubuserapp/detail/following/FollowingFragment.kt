@@ -21,15 +21,14 @@ class FollowingFragment : Fragment() {
     var userName: String? = null
     lateinit var userAdapter: FeatureAdapter
     private var _binding: FragmentFollowingBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFollowingBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,10 +38,11 @@ class FollowingFragment : Fragment() {
 //setup rv
         userName = arguments?.getString("name")
         userAdapter = FeatureAdapter(requireActivity().applicationContext)
-        userAdapter.notifyDataSetChanged()
-        binding.rvFollowing.layoutManager = LinearLayoutManager(activity)
-        binding.rvFollowing.setHasFixedSize(true)
-        binding.rvFollowing.adapter = userAdapter
+        binding?.apply {
+            rvFollowing.layoutManager = LinearLayoutManager(activity)
+            rvFollowing.setHasFixedSize(true)
+            rvFollowing.adapter = userAdapter
+        }
 
 //        setup viewmodel
         featureViewModel.setFollowing(userName.toString())
@@ -56,18 +56,22 @@ class FollowingFragment : Fragment() {
     fun showLoading() {
         featureViewModel.loading.observe(viewLifecycleOwner) {
             if (it) {
-                binding.pbFollowing.visibility = View.VISIBLE
-                binding.rvFollowing.visibility = View.INVISIBLE
+                binding?.apply {
+                    pbFollowing.visibility = View.VISIBLE
+                    rvFollowing.visibility = View.INVISIBLE
+                }
 
             } else {
-                binding.pbFollowing.visibility = View.INVISIBLE
-                binding.rvFollowing.visibility = View.VISIBLE
+                binding?.apply {
+                    pbFollowing.visibility = View.INVISIBLE
+                    rvFollowing.visibility = View.VISIBLE
+                }
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

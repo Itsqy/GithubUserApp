@@ -29,9 +29,8 @@ class UsersAdapter(val context: Context) :
     //run in mainthread ?
 //    ambil data dari viewmodel yang ngegali di backgorund thread
     fun setListUser(users: ArrayList<ListUserResponse>) {
-        dataUser!!.clear()
-        dataUser!!.addAll(users)
-        notifyDataSetChanged()
+        dataUser.clear()
+        dataUser.addAll(users)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

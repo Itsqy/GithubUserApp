@@ -27,9 +27,8 @@ class FeatureAdapter(val context: Context) :
     }
 
     fun setListUser(users: ArrayList<ListUserResponse>) {
-        dataUser!!.clear()
-        dataUser!!.addAll(users)
-        notifyDataSetChanged()
+        dataUser.clear()
+        dataUser.addAll(users)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

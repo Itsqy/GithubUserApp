@@ -19,6 +19,9 @@ class FeatureViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _isLoading
 
+    private val _msgError = MutableLiveData<String>()
+    val msgError: LiveData<String> = _msgError
+
     //followers
     fun setFollowers(userName: String) {
         _isLoading.value = true
@@ -36,6 +39,7 @@ class FeatureViewModel : ViewModel() {
 
             override fun onFailure(call: Call<ArrayList<ListUserResponse>>, t: Throwable) {
                 Log.d("feature", t.message.toString())
+                _msgError.value = t.message
             }
 
         })
@@ -63,6 +67,7 @@ class FeatureViewModel : ViewModel() {
 
             override fun onFailure(call: Call<ArrayList<ListUserResponse>>, t: Throwable) {
                 Log.d("feature", t.message.toString())
+                _msgError.value = t.message
             }
 
         })

@@ -22,9 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:text="Muhammad Rifqi Syatria"
+        android:text="@string/rifqi"
         android:textColor="@color/black"
-        android:textSize="22dp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_users"
         app:layout_constraintStart_toEndOf="@id/iv_users"
         app:layout_constraintTop_toTopOf="@id/iv_users" />

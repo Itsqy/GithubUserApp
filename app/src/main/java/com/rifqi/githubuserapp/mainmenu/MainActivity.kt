@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rifqi.githubuserapp.R
 import com.rifqi.githubuserapp.databinding.ActivityMainBinding
 import com.rifqi.githubuserapp.model.ListUserResponse
 
@@ -22,9 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        bind  viewModel
-//        mainViewModel = MainViewModel()
-//        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val adapter = UsersAdapter(this)
         mainViewModel.showListUser("q")
 
@@ -47,7 +45,11 @@ class MainActivity : AppCompatActivity() {
         binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query!!.isEmpty()) {
-                    Toast.makeText(this@MainActivity, "User Tidak Ditemukan", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.usernotfound),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return true
                 } else {
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.showListUser(newText.toString())
 
                     Toast.makeText(
-                        this@MainActivity, "User tidak ditemukan", Toast.LENGTH_SHORT
+                        this@MainActivity, getString(R.string.usernotfound), Toast.LENGTH_SHORT
                     ).show()
 
                 } else {
@@ -78,14 +80,6 @@ class MainActivity : AppCompatActivity() {
 
         isshowLoading()
 
-    }
-
-    fun showLoading(status: Boolean) {
-        if (status) {
-            binding.pbUsers.visibility = View.VISIBLE
-        } else {
-            binding.pbUsers.visibility = View.INVISIBLE
-        }
     }
 
     fun isshowLoading() {
