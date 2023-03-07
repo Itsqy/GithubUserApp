@@ -33,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.getDetail().observe(this) {
             binding.apply {
-                tvNameUser.text = name.toString()
+                tvNameUser.text = it.name
                 Glide.with(this@DetailActivity).load(img).into(ivDetailUser)
                 tvFollowers.text = "Followers\n" + it.followers.toString()
                 tvFollowing.text = "Following\n" + it.following.toString()

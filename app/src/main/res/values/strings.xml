@@ -9,4 +9,6 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="namae">Muhammad Rifqi Syatria</string>
     <string name="not_found_user">User Tidak Ditemukan</string>
+    <string name="input_username">input username here</string>
+    <string name="username">username</string>
 </resources>
