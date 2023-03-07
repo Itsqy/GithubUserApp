@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import com.rifqi.githubuserapp.favorite.repo.FavoriteRepository
 import com.rifqi.githubuserapp.model.Favorite
 import com.rifqi.githubuserapp.model.ListUserResponse
-import com.rifqi.githubuserapp.model.UserResponse
 import com.rifqi.githubuserapp.network.ApiConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

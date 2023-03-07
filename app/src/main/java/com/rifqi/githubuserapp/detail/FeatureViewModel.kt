@@ -1,12 +1,11 @@
 package com.rifqi.githubuserapp.detail
 
-import android.util.Log
-import androidx.datastore.preferences.protobuf.Internal.BooleanList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rifqi.githubuserapp.model.ListUserResponse
 import com.rifqi.githubuserapp.network.ApiConfig
+import com.rifqi.githubuserapp.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,6 +17,9 @@ class FeatureViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _isLoading
+
+    private val _msgError = MutableLiveData<Event<String>>()
+    val msgError: LiveData<Event<String>> = _msgError
 
     //followers
     fun setFollowers(userName: String) {
@@ -35,7 +37,8 @@ class FeatureViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ArrayList<ListUserResponse>>, t: Throwable) {
-                Log.d("feature", t.message.toString())
+                _isLoading.value = false
+                _msgError.value = Event(t.message.toString())
             }
 
         })
@@ -62,7 +65,8 @@ class FeatureViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ArrayList<ListUserResponse>>, t: Throwable) {
-                Log.d("feature", t.message.toString())
+                _isLoading.value = false
+                _msgError.value = Event(t.message.toString())
             }
 
         })

@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels<MainViewModel>() {
         ViewModelFactory.getInstance(application)
     }
-//    private lateinit var adapter: UsersAdapter
+
+    //    private lateinit var adapter: UsersAdapter
     private var isChecked: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -55,7 +56,11 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.showListUser(query)
                     return true
                 } else {
-                    Toast.makeText(this@MainActivity, "User Tidak Ditemukan", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.not_found_user),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return false
 

@@ -88,9 +88,9 @@ class DetailActivity : AppCompatActivity() {
     private fun setUpViewPager(name: String?) {
         val parsData = Bundle()
         parsData.putString("name", name)
-        val fragadapter = FragmentAdapter(this, parsData)
+        val fragAdapter = FragmentAdapter(this, parsData)
 
-        binding.vpFragment.adapter = fragadapter
+        binding.vpFragment.adapter = fragAdapter
         TabLayoutMediator(binding.tablayout, binding.vpFragment) { i, posision ->
             i.text = resources.getString(title_tabs[posision])
         }.attach()
