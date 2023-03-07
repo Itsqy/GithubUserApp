@@ -1,18 +1,24 @@
 package com.rifqi.githubuserapp.mainmenu
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.*
 import com.rifqi.githubuserapp.model.ListUserResponse
 import com.rifqi.githubuserapp.model.UserResponse
 import com.rifqi.githubuserapp.network.ApiConfig
+import com.rifqi.githubuserapp.settingpref.ThemePreferences
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val application: Application) : ViewModel() {
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    private val pref: ThemePreferences = ThemePreferences.getInstance(application.dataStore)
 
     //    private val _users = MutableLiveData<List<ListUserResponse>>()
     val users = MutableLiveData<ArrayList<ListUserResponse>>()
@@ -53,6 +59,16 @@ class MainViewModel : ViewModel() {
 
     fun getUsers(): LiveData<ArrayList<ListUserResponse>> {
         return users
+    }
+
+    fun getThemeSetting(): LiveData<Boolean> {
+        return pref.getTheme().asLiveData()
+    }
+
+    fun saveThemeSetting(isDarkActive: Boolean) {
+        viewModelScope.launch {
+            pref.saveTheme(isDarkActive)
+        }
     }
 
 }

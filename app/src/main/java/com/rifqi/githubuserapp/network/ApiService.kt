@@ -1,6 +1,5 @@
 package com.rifqi.githubuserapp.network
 
-import android.telecom.Call
 import com.rifqi.githubuserapp.model.ListUserResponse
 import com.rifqi.githubuserapp.model.UserResponse
 import retrofit2.http.GET

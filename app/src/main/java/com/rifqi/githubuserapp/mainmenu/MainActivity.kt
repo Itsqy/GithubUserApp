@@ -1,30 +1,35 @@
 package com.rifqi.githubuserapp.mainmenu
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rifqi.githubuserapp.R
 import com.rifqi.githubuserapp.databinding.ActivityMainBinding
-import com.rifqi.githubuserapp.model.ListUserResponse
+import com.rifqi.githubuserapp.favorite.FavoriteActivity
+import com.rifqi.githubuserapp.settingpref.DarkModeActivity
+import com.rifqi.githubuserapp.utils.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels<MainViewModel>() {
+        ViewModelFactory.getInstance(application)
+    }
+//    private lateinit var adapter: UsersAdapter
+    private var isChecked: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        bind  viewModel
-//        mainViewModel = MainViewModel()
-//        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val adapter = UsersAdapter(this)
         mainViewModel.showListUser("q")
 
@@ -38,37 +43,29 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "error : $msg", Toast.LENGTH_SHORT).show()
         }
 //        bind rv to adapter
-        binding.apply {
+        binding?.apply {
             rvUsers.setHasFixedSize(true)
             rvUsers.layoutManager = LinearLayoutManager(this@MainActivity)
             rvUsers.adapter = adapter
         }
 
         binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query!!.isEmpty()) {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (query.isNotEmpty() && query != null) {
+                    mainViewModel.showListUser(query)
+                    return true
+                } else {
                     Toast.makeText(this@MainActivity, "User Tidak Ditemukan", Toast.LENGTH_SHORT)
                         .show()
-                    return true
-                } else {
+                    return false
 
-                    mainViewModel.showListUser(query.toString())
-
-                    return true
                 }
+                return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isEmpty()) {
-                    mainViewModel.showListUser(newText.toString())
-
-                    Toast.makeText(
-                        this@MainActivity, "User tidak ditemukan", Toast.LENGTH_SHORT
-                    ).show()
-
-                } else {
-                    mainViewModel.showListUser(newText.toString())
-
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isNotEmpty() && newText != null) {
+                    mainViewModel.showListUser(newText)
                 }
                 return false
             }
@@ -77,16 +74,24 @@ class MainActivity : AppCompatActivity() {
         )
 
         isshowLoading()
+        setTheme()
 
     }
 
-    fun showLoading(status: Boolean) {
-        if (status) {
-            binding.pbUsers.visibility = View.VISIBLE
-        } else {
-            binding.pbUsers.visibility = View.INVISIBLE
+    private fun setTheme() {
+        mainViewModel.getThemeSetting().observe(this) { isDarkActive: Boolean ->
+
+            if (isDarkActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                isChecked = true
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
         }
+
     }
+
 
     fun isshowLoading() {
         mainViewModel.loading.observe(this) {
@@ -99,6 +104,19 @@ class MainActivity : AppCompatActivity() {
                 binding.rvUsers.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.all_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_favorite -> startActivity(Intent(this, FavoriteActivity::class.java))
+            R.id.sett_preff -> startActivity(Intent(this, DarkModeActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

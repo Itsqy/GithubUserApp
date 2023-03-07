@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rifqi.githubuserapp.R
 import com.rifqi.githubuserapp.detail.DetailActivity
 import com.rifqi.githubuserapp.model.ListUserResponse
+import com.rifqi.githubuserapp.utils.UserDiffCallBack
 
 class UsersAdapter(val context: Context) :
     RecyclerView.Adapter<UsersAdapter.MyViewHolder>() {
@@ -26,12 +26,16 @@ class UsersAdapter(val context: Context) :
 
     }
 
-    //run in mainthread ?
-//    ambil data dari viewmodel yang ngegali di backgorund thread
-    fun setListUser(users: ArrayList<ListUserResponse>) {
-        dataUser!!.clear()
-        dataUser!!.addAll(users)
-        notifyDataSetChanged()
+
+    //    ambil data dari viewmodel yang ngegali di backgorund thread
+    fun setListUser(dataUser: ArrayList<ListUserResponse>) {
+        val diffutil = UserDiffCallBack(this.dataUser, dataUser)
+        val diffResult = DiffUtil.calculateDiff(diffutil)
+        this.dataUser.clear()
+        this.dataUser.addAll(dataUser)
+        diffResult.dispatchUpdatesTo(this)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -40,12 +44,12 @@ class UsersAdapter(val context: Context) :
     }
 
     override fun getItemCount(): Int {
-        return dataUser!!.size
+        return dataUser.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.userName.text = dataUser!![position].username
-        Glide.with(context).load(dataUser!![position].avatarUrl).into(holder.imgUser)
+        holder.userName.text = dataUser[position].username
+        Glide.with(context).load(dataUser[position].avatarUrl).into(holder.imgUser)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra("name", dataUser[position].username)

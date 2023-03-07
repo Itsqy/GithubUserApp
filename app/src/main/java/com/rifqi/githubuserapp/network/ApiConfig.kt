@@ -1,5 +1,6 @@
 package com.rifqi.githubuserapp.network
 
+import com.rifqi.githubuserapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,15 +8,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
+
+    val token = BuildConfig.API_KEY
     val authInterceptor = Interceptor { chain ->
         val req = chain.request()
         val requestHeaders = req.newBuilder()
-            .addHeader("Authorization", "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")
+            .addHeader("Authorization", "$token")
             .build()
         chain.proceed(requestHeaders)
     }
 
     fun getApiService(): ApiService {
+        val apiUrl = BuildConfig.API_URL
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
@@ -23,7 +27,7 @@ object ApiConfig {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl("$apiUrl")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
