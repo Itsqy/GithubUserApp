@@ -1,6 +1,5 @@
 package com.rifqi.githubuserapp.detail
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +22,6 @@ class DetailViewModel(application: Application) : ViewModel() {
     val errorMsg: LiveData<String> = _errorMsg
 
     private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(application)
-
 
     fun setDetail(user: String) {
         ApiConfig.getApiService().getDetail(user).enqueue(object : Callback<ListUserResponse> {
